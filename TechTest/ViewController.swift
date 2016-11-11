@@ -11,43 +11,31 @@ import Alamofire
 import SwiftyJSON
 
 class ViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+  
+  var NumberOfRows = 0
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    // Do any additional setup after loading the view, typically from a nib.
+    
+    Alamofire.request("https://sheetsu.com/apis/v1.0/aaf79d4763af").validate().responseJSON { response in
+      switch response.result {
+      case .success(let value):
+        let json = JSON(value)
         
-          let requestURL: NSURL = NSURL(string: "http://www.learnswiftonline.com/Samples/subway.json")!
-          let urlRequest: NSMutableURLRequest = NSMutableURLRequest(url: requestURL as URL)
-          let session = URLSession.shared
-          let task = session.dataTask(with: urlRequest as URLRequest) {
-              (data, response, error) -> Void in
-            
-              let httpResponse = response as! HTTPURLResponse
-              let statusCode = httpResponse.statusCode
-            
-              if (statusCode == 200) {
-                  print("Everyone is fine, file downloaded successfully.")
-                
-                do{
-                  let json = JSON(data: dataFromNetworking)
-                  if let userName = json[0]["user"]["name"].string {
-                    //Now you got your value
-                  }
-                }catch {
-                  
-                }
-              
-              }
-          }
-      
-          task.resume()
+        print("\(json)\nEverything is fine!")
+      case .failure(let error):
+        print(error)
+      }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-
+    
+  }
+  
+  override func didReceiveMemoryWarning() {
+    super.didReceiveMemoryWarning()
+    // Dispose of any resources that can be recreated.
+  }
+  
+  
 }
 
