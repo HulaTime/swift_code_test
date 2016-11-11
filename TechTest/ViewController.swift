@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Alamofire
+import SwiftyJSON
 
 class ViewController: UIViewController {
 
@@ -25,6 +27,16 @@ class ViewController: UIViewController {
             
               if (statusCode == 200) {
                   print("Everyone is fine, file downloaded successfully.")
+                
+                do{
+                  let json = JSON(data: dataFromNetworking)
+                  if let userName = json[0]["user"]["name"].string {
+                    //Now you got your value
+                  }
+                }catch {
+                  
+                }
+              
               }
           }
       
