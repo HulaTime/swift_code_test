@@ -10,9 +10,11 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
-class ViewController: UIViewController {
+class ViewController: UITableViewController {
   
   var NumberOfRows = 0
+  var names = ["hello", "world"]
+  var images = [String]()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -23,7 +25,17 @@ class ViewController: UIViewController {
       case .success(let value):
         let json = JSON(value)
         
-        print("\(json)\nEverything is fine!")
+        self.NumberOfRows = json.count
+        
+        for i in 0...self.NumberOfRows {
+          
+          let name = json[i]["name"].string! as String
+          
+          self.names.append(name)
+        }
+          
+
+        NSLog("\(json)\nEverything is fine!")
       case .failure(let error):
         print(error)
       }
@@ -36,6 +48,19 @@ class ViewController: UIViewController {
     // Dispose of any resources that can be recreated.
   }
   
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return NumberOfRows
+  }
+
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    var cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! UITableViewCell
+    
+    if names.count != 0 {
+      cell.textLabel?.text = names[indexPath.row]
+    }
+    
+    return cell
+  }
   
 }
 
